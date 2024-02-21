@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>TODOsList</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">TODOsList</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container my-4">
+        <h2 class="text-center">Work List</h2>
+        <div class="form-group">
+            <label for="task">Enter Your Task :-</label>
+            <input type="text" class="form-control" id="task" aria-describedby="emailHelp" placeholder="Enter Task">
+        </div>
+        <div class="form-group">
+            <label for="discription">Discription</label>
+            <textarea class="form-control" id="discription" rows="3" placeholder="Enter Discription"></textarea>
+        </div>
+        <button type="submit" id="addtask" class="btn btn-primary">Add To TaskList</button>
+        <button type="submit" id="addtask" class="btn btn-primary" onclick="forclear()">Clear Table</button>
+    </div>
+    <div id="WorkList" class="container my-4">
+        <h2 class="text-center">TO DO List</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Srno.</th>
+                    <th scope="col">Task</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tablebody">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function getup() {
+            title = document.getElementById('task').value;
+            disc = document.getElementById('discription').value;
+            if (localStorage.getItem('taskitems') == null) {
+                taskitemsArray = [];
+                taskitemsArray.push([title, disc]);
+                localStorage.setItem('taskitems', JSON.stringify(taskitemsArray));
+            }
+            else {
+                taskitemsstr = localStorage.getItem('taskitems');
+                taskitemsArray = JSON.parse(taskitemsstr);
+                taskitemsArray.push([title, disc]);
+                localStorage.setItem('taskitems', JSON.stringify(taskitemsArray));
+                update();
+            }
+        }
+        function update() {
+            if (localStorage.getItem('taskitems') == null) {
+                taskitemsArray = [];
+                localStorage.setItem('taskitems', JSON.stringify(taskitemsArray));
+            }
+            else {
+                taskitemsstr = localStorage.getItem('taskitems');
+                taskitemsArray = JSON.parse(taskitemsstr);
+            }
+            let tablebody = document.getElementById('tablebody');
+            let str = "";
+            taskitemsArray.forEach((element, index) => {
+                str = str + `<tr>
+                    <th scope="row">${index + 1}</th>
+                    <td>${element[0]}</td>
+                    <td>${element[1]}</td>
+                    <td><a class="btn btn-primary" onclick="deleted(${index})">Delete</a></td>
+                </tr>`
+            });
+            document.getElementById('tablebody').innerHTML = str;
+        }
+        add = document.getElementById('addtask');
+        add.addEventListener('click', getup);
+        update();
+        function deleted(index) {
+            console.log('Deleting item no :- ' + (index + 1));
+            taskitemsstr = localStorage.getItem('taskitems');
+            taskitemsArray = JSON.parse(taskitemsstr);
+            //detele
+            taskitemsArray.splice(index, 1)
+            localStorage.setItem('taskitems', JSON.stringify(taskitemsArray));
+            update();
+        }
+        function forclear(){
+            console.log('Clearing the table....');
+            localStorage.clear();
+            update();
+        }
+    </script>
+</body>
+
+</html>
