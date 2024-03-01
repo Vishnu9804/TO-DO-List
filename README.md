@@ -9,9 +9,9 @@ This is a simple To-Do list application built using HTML, CSS, and JavaScript. I
 - Delete tasks
 - Simple and intuitive user interface
 
-## How to Use
+## Use it....
 
-1. **Clone the repository :-**
+**Clone the repository :-**
 
    ```bash
    git clone https://github.com/Vishnu9804/to-do-list.git
